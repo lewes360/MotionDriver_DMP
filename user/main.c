@@ -12,13 +12,13 @@
 #define BUG_DETECT_PRINT(a,has_bug,no_bug) { if(a) \
 printf("%s",has_bug); \
 else \
-printf("%s",no_bug);}
+printf("%s",no1111_bug);}
 
 #define DEFAULT_MPU_HZ  (100)
 #define ACCEL_WINDOW_H	400
 #define ACCEL_WINDOW_L	-400
-/*º¯Êı¹¦ÄÜ£º¸ù¾İÄäÃû×îĞÂÉÏÎ»»úĞ­ÒéĞ´µÄÏÔÊ¾×ËÌ¬µÄ³ÌĞò
- *¾ßÌåÔ­Àí¿´ÄäÃûµÄ½²½âÊÓÆµ
+/*å‡½æ•°åŠŸèƒ½ï¼šæ ¹æ®åŒ¿åæœ€æ–°ä¸Šä½æœºåè®®å†™çš„æ˜¾ç¤ºå§¿æ€çš„ç¨‹åº
+ *å…·ä½“åŸç†çœ‹åŒ¿åçš„è®²è§£è§†é¢‘
  */
 #define BYTE0(dwTemp)       (*(char *)(&dwTemp))
 #define BYTE1(dwTemp)       (*((char *)(&dwTemp) + 1))
@@ -47,12 +47,12 @@ void Data_Send_Status(float Pitch,float Roll,float Yaw,int16_t *gyro,int16_t *ac
     data_to_send[_cnt++]=BYTE0(_temp);
 
     data_to_send[3] = _cnt-4;
-    //ºÍĞ£Ñé
+    //å’Œæ ¡éªŒ
     for(i=0; i<_cnt; i++)
         sum+= data_to_send[i];
     data_to_send[_cnt++]=sum;
 
-    //´®¿Ú·¢ËÍÊı¾İ
+    //ä¸²å£å‘é€æ•°æ®
     for(i=0; i<_cnt; i++)
         printf("%c",data_to_send[i]);
 }
@@ -88,17 +88,17 @@ void Send_Data(int16_t *Gyro,int16_t *Accel)
     data_to_send[_cnt++]=0;
 
     data_to_send[3] = _cnt-4;
-    //ºÍĞ£Ñé
+    //å’Œæ ¡éªŒ
     for(i=0; i<_cnt; i++)
         sum+= data_to_send[i];
     data_to_send[_cnt++]=sum;
 
-    //´®¿Ú·¢ËÍÊı¾İ
+    //ä¸²å£å‘é€æ•°æ®
     for(i=0; i<_cnt; i++)
         printf("%c",data_to_send[i]);
 }
 
-/* a[0]º½Ïò½Ç a[1]¸©Ñö½Ç a[2]ºá¹ö½Ç */
+/* a[0]èˆªå‘è§’ a[1]ä¿¯ä»°è§’ a[2]æ¨ªæ»šè§’ */
 void evaluateDirectionCosine(int16_t accel[3],float a[3],float accel_res[3])
 {
     float cos_a,cos_b,cos_c,sin_a,sin_b,sin_c;
@@ -117,14 +117,14 @@ void evaluateDirectionCosine(int16_t accel[3],float a[3],float accel_res[3])
 }
 
 
-/*ĞŞ¸ÄºóµÄ»ùÓÚËÄÔªÊı×ª»»¾ØÕó*/
+/*ä¿®æ”¹åçš„åŸºäºå››å…ƒæ•°è½¬æ¢çŸ©é˜µ*/
 void evaluateQuat(float accel_res[3],float accel[3],float q[4])
 {
     accel_res[0]    = (q[0]*q[0] + q[1]*q[1] - q[2]*q[2] - q[3]*q[3])	*accel[0] + (2*q[0]*q[3]+2*q[1]*q[2])                           *accel[1]	+(2*q[1]*q[3]-2*q[0]*q[2])                          *accel[2];
     accel_res[1]	= (2*q[1]*q[2]-2*q[0]*q[3])						    *accel[0] + (q[0]*q[0] - q[1]*q[1] + q[2]*q[2] - q[3]*q[3])	    *accel[1]   + (2*q[0]*q[1]+2*q[2]*q[3])                         *accel[2];
     accel_res[2]	=	(2*q[0]*q[2]+2*q[1]*q[3])						*accel[0] + (-2*q[0]*q[1]+2*q[2]*q[3])                          *accel[1]	+(q[0]*q[0] - q[1]*q[1] - q[2]*q[2] + q[3]*q[3])	*accel[2];
 }
-/* ¼ÓËÙ¶ÈÖµ´Ó»ùÓÚÔØÌå×ø±êÏµ×ªÎª²Î¿¼×ø±êÏµ */
+/* åŠ é€Ÿåº¦å€¼ä»åŸºäºè½½ä½“åæ ‡ç³»è½¬ä¸ºå‚è€ƒåæ ‡ç³» */
 void acc_convert(int16_t accel_res[3],int16_t accel[3],float q[4])
 {
     accel_res[0]    = (q[0]*q[0] + q[1]*q[1] - q[2]*q[2] - q[3]*q[3])	*accel[0] + (2*q[1]*q[2]-2*q[0]*q[3])	                        *accel[1]	+(2*q[0]*q[2]+2*q[1]*q[3])                          *accel[2];
@@ -132,7 +132,7 @@ void acc_convert(int16_t accel_res[3],int16_t accel[3],float q[4])
     accel_res[2]	= (2*q[1]*q[3]-2*q[0]*q[2])							*accel[0] + (2*q[0]*q[1]+2*q[2]*q[3])                           *accel[1]	+(q[0]*q[0] - q[1]*q[1] - q[2]*q[2] + q[3]*q[3])	*accel[2];
 }
 
-/* Function: ¼ÓËÙ¶ÈÒ»ÖØ»ı·Ö  V(n) = V(n-1) + 0.5 * (a(n) + a(n-1)) * dt
+/* Function: åŠ é€Ÿåº¦ä¸€é‡ç§¯åˆ†  V(n) = V(n-1) + 0.5 * (a(n) + a(n-1)) * dt
 */
 void acc_to_vel(float vel[3],float a[3],float ap[3],unsigned long time)
 {
@@ -168,26 +168,26 @@ void acc_to_disp(float disp[3],float a[3],float ap[3],float time)
 int16_t	acc_xyz_data[3][ACC_FILTER_COUNT] = {0};
 int16_t	acc_data_index = 0;
 
-/* ¶ÔÔ­Ê¼Êı¾İ¼ÓËÙ¶ÈÖµ½øĞĞÂË²¨ */
+/* å¯¹åŸå§‹æ•°æ®åŠ é€Ÿåº¦å€¼è¿›è¡Œæ»¤æ³¢ */
 void acc_filter(int16_t accel[3],int16_t acc_ave[3])
 {
 	int i,j;
 	int32_t	acc_data_sum[3] = {0};
 	
-	//ÏÈ½øĞĞÒ»´Î»úĞµ´°¿ÚÂË²¨
+	//å…ˆè¿›è¡Œä¸€æ¬¡æœºæ¢°çª—å£æ»¤æ³¢
 	for(i = 0; i < 3; i++)
 	{
 		if(accel[i] < ACCEL_WINDOW_H && accel[i] > ACCEL_WINDOW_L)
 			accel[i] = 0;
 	}
 	
-	//½«iÖáµÄ¼ÓËÙ¶È±£´æÔÚacc_data_indexÁĞÖĞ
+	//å°†iè½´çš„åŠ é€Ÿåº¦ä¿å­˜åœ¨acc_data_indexåˆ—ä¸­
 	for(i=0;i<3;i++)
 	{
 		acc_xyz_data[i][acc_data_index] = accel[i];
 	}
 	
-	//acc_data_indexÑ­»·¼Ó1
+	//acc_data_indexå¾ªç¯åŠ 1
 	acc_data_index++;
 	
 	if(acc_data_index == ACC_FILTER_COUNT)
@@ -195,7 +195,7 @@ void acc_filter(int16_t accel[3],int16_t acc_ave[3])
 		acc_data_index = 0;
 	}
 	
-	//ĞĞÇóºÍ
+	//è¡Œæ±‚å’Œ
 	for(i=0;i<3;i++)
 	{
 		for(j=0;j<ACC_FILTER_COUNT;j++)
@@ -205,7 +205,7 @@ void acc_filter(int16_t accel[3],int16_t acc_ave[3])
 		acc_ave[i] = acc_data_sum[i]/ACC_FILTER_COUNT;
 	}
 	
-	//ÔÙ¶Ôacc_ave½øĞĞÒ»´Î»úĞµ´°¿ÚÂË²¨
+	//å†å¯¹acc_aveè¿›è¡Œä¸€æ¬¡æœºæ¢°çª—å£æ»¤æ³¢
 	for(i=0;i<3;i++)
 	{
 		if(acc_ave[i] < ACCEL_WINDOW_H && acc_ave[i] > ACCEL_WINDOW_L)
@@ -213,11 +213,11 @@ void acc_filter(int16_t accel[3],int16_t acc_ave[3])
 	}
 }
 
-/* »úĞµÂË²¨ */
+/* æœºæ¢°æ»¤æ³¢ */
 void movement_end_check(short int accel_n[3],long int vel[2][3])
 {
 	static unsigned int countx = 0, county = 0, countz = 0;
-	//´¦ÀíXÖá
+	//å¤„ç†Xè½´
 	if (accel_n[0]==0) //we count the number of acceleration samples that equals cero
 	{ 
 		countx++;
@@ -231,7 +231,7 @@ void movement_end_check(short int accel_n[3],long int vel[2][3])
 		vel[1][0]=0;
 		vel[0][0]=0;
 	}
-	//´¦ÀíYÖá
+	//å¤„ç†Yè½´
 	if (accel_n[1]==0) //we do the same for the Y axis
 	{ 
 		county++;
@@ -245,7 +245,7 @@ void movement_end_check(short int accel_n[3],long int vel[2][3])
 		vel[1][1]=0;
 		vel[0][1]=0;
 	}
-	//´¦ÀíZÖá
+	//å¤„ç†Zè½´
 	if(accel_n[2] == 0)
 	{
 		countz++;
@@ -290,36 +290,36 @@ int main(void)
 
 		unsigned long time1,time2;
 
-    /* debugÓÃµÄ±äÁ¿ */
+    /* debugç”¨çš„å˜é‡ */
     int16_t accel_show[3],i;
 
     clock_conf();
 
     /* USART1 config 115200 8-N-1 */
     USART1_Config();
-    printf("\r\n ÕâÊÇÒ»¸öMDÒÆÖ²³ÌĞò \r\n");
+    printf("\r\n è¿™æ˜¯ä¸€ä¸ªMDç§»æ¤ç¨‹åº \r\n");
 
-    ANBT_I2C_Configuration();		//IIC³õÊ¼»¯
-    //BUG_DETECT_PRINT(i2c_CheckDevice(0x68<<1),"\r\n Î´¼ì²âµ½MPU6050 \r\n","\r\n ¼ì²âµ½MPU6050 \r\n");
+    ANBT_I2C_Configuration();		//IICåˆå§‹åŒ–
+    //BUG_DETECT_PRINT(i2c_CheckDevice(0x68<<1),"\r\n æœªæ£€æµ‹åˆ°MPU6050 \r\n","\r\n æ£€æµ‹åˆ°MPU6050 \r\n");
 
-    //BUG_DETECT_PRINT((result = DMP_MPU6050_DEV_CFG()),"\r\n MPU6050Ê§°Ü\r\n","\r\n MPU6050 \r\n");
+    //BUG_DETECT_PRINT((result = DMP_MPU6050_DEV_CFG()),"\r\n MPU6050å¤±è´¥\r\n","\r\n MPU6050 \r\n");
 
-    BUG_DETECT_PRINT(mpu_init(&int_param),"\r\n MPU6050³õÊ¼»¯Ê§°Ü\r\n","\r\n MPU6050³õÊ¼»¯³É¹¦\r\n");
+    BUG_DETECT_PRINT(mpu_init(&int_param),"\r\n MPU6050åˆå§‹åŒ–å¤±è´¥\r\n","\r\n MPU6050åˆå§‹åŒ–æˆåŠŸ\r\n");
 
-    BUG_DETECT_PRINT(mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL),"\r\n DMPÉèÖÃ´«¸ĞÆ÷Ê§°Ü\r\n","\r\n DMPÉèÖÃ´«¸ĞÆ÷³É¹¦\r\n");
+    BUG_DETECT_PRINT(mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL),"\r\n DMPè®¾ç½®ä¼ æ„Ÿå™¨å¤±è´¥\r\n","\r\n DMPè®¾ç½®ä¼ æ„Ÿå™¨æˆåŠŸ\r\n");
 
     /* Push both gyro and accel data into the FIFO. */
-    BUG_DETECT_PRINT(mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL),"\r\n ÉèÖÃFIFOÊ§°Ü\r\n","\r\n ÉèÖÃFIFO³É¹¦\r\n");
+    BUG_DETECT_PRINT(mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL),"\r\n è®¾ç½®FIFOå¤±è´¥\r\n","\r\n è®¾ç½®FIFOæˆåŠŸ\r\n");
 
-    BUG_DETECT_PRINT(mpu_set_sample_rate(DEFAULT_MPU_HZ),"\r\n ÉèÖÃ²ÉÑùÂÊÊ§°Ü\r\n","\r\n ÉèÖÃ²ÉÑùÂÊ³É¹¦\r\n");
+    BUG_DETECT_PRINT(mpu_set_sample_rate(DEFAULT_MPU_HZ),"\r\n è®¾ç½®é‡‡æ ·ç‡å¤±è´¥\r\n","\r\n è®¾ç½®é‡‡æ ·ç‡æˆåŠŸ\r\n");
 
-    BUG_DETECT_PRINT(dmp_load_motion_driver_firmware(),"\r\n ¼ÓÔØ¹Ì¼şÊ§°Ü\r\n","\r\n ¼ÓÔØ³É¹¦\r\n");
+    BUG_DETECT_PRINT(dmp_load_motion_driver_firmware(),"\r\n åŠ è½½å›ºä»¶å¤±è´¥\r\n","\r\n åŠ è½½æˆåŠŸ\r\n");
 
-    BUG_DETECT_PRINT(dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation)),"\r\n DMPÉèÖÃ³õÊ¼·½ÏòÊ§°Ü\r\n","\r\n DMPÉèÖÃ³õÊ¼·½Ïò³É¹¦\r\n");
+    BUG_DETECT_PRINT(dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation)),"\r\n DMPè®¾ç½®åˆå§‹æ–¹å‘å¤±è´¥\r\n","\r\n DMPè®¾ç½®åˆå§‹æ–¹å‘æˆåŠŸ\r\n");
 
-    BUG_DETECT_PRINT(dmp_enable_feature(DMP_FEATURE_6X_LP_QUAT  | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO | DMP_FEATURE_GYRO_CAL),"\r\n DMP³õÊ¼»¯ÌØĞÔÊ§°Ü\r\n","\r\n DMP³õÊ¼»¯ÌØĞÔ³É¹¦\r\n");
+    BUG_DETECT_PRINT(dmp_enable_feature(DMP_FEATURE_6X_LP_QUAT  | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO | DMP_FEATURE_GYRO_CAL),"\r\n DMPåˆå§‹åŒ–ç‰¹æ€§å¤±è´¥\r\n","\r\n DMPåˆå§‹åŒ–ç‰¹æ€§æˆåŠŸ\r\n");
 
-    BUG_DETECT_PRINT(dmp_set_fifo_rate(DEFAULT_MPU_HZ),"\r\n ÉèÖÃFIFOÊä³öËÙÂÊÊ§°Ü\r\n","\r\n ÉèÖÃFIFOÊä³öËÙÂÊ³É¹¦\r\n");
+    BUG_DETECT_PRINT(dmp_set_fifo_rate(DEFAULT_MPU_HZ),"\r\n è®¾ç½®FIFOè¾“å‡ºé€Ÿç‡å¤±è´¥\r\n","\r\n è®¾ç½®FIFOè¾“å‡ºé€Ÿç‡æˆåŠŸ\r\n");
 
     run_self_test();
 
@@ -327,7 +327,7 @@ int main(void)
     
 		delay_ms(10000);
 		
-    /* ÓÃÓÚ³ıÈ¥ÖØÁ¦£¬²Î¿¼×ø±êÏµµÄZÖá¼ÓËÙ¶Èg×ª»»³ÉÔØÌå×ø±êÏµÉÏµÄ¼ÓËÙ¶È */
+    /* ç”¨äºé™¤å»é‡åŠ›ï¼Œå‚è€ƒåæ ‡ç³»çš„Zè½´åŠ é€Ÿåº¦gè½¬æ¢æˆè½½ä½“åæ ‡ç³»ä¸Šçš„åŠ é€Ÿåº¦ */
     accel_g[0] = 0;
     accel_g[1] = 0;
     accel_g[2] = 0.978833;
@@ -339,43 +339,43 @@ int main(void)
 //        printf("%ld\n",timestamp);
         if((sensors & INV_WXYZ_QUAT))
         {
-            /* DMPËùµÃµÄËÄÔªÊı */
+            /* DMPæ‰€å¾—çš„å››å…ƒæ•° */
             q[0]=quat[0] / 1073741824.0f;
             q[1]=quat[1] / 1073741824.0f;
             q[2]=quat[2] / 1073741824.0f;
             q[3]=quat[3] / 1073741824.0f;
 
-            /* ÓÉËÄÔªÊıËùµÃµÄÅ·À­½Ç£¬µ¥Î»¶È */
+            /* ç”±å››å…ƒæ•°æ‰€å¾—çš„æ¬§æ‹‰è§’ï¼Œå•ä½åº¦ */
             Pitch = asin(-2 * q[1] * q[3] + 2 * q[0]* q[2]) *57.3; // pitch
             Roll = atan2(2 * q[2] * q[3] + 2 * q[0] * q[1], -2 * q[1] * q[1] - 2 * q[2]* q[2] + 1)*57.3; // roll
-            Yaw = 	atan2(2*(q[1]*q[2] + q[0]*q[3]),q[0]*q[0]+q[1]*q[1]-q[2]*q[2]-q[3]*q[3])*57.3 ;		//¸Ğ¾õÃ»ÓĞ¼ÛÖµ£¬×¢µô     
+            Yaw = 	atan2(2*(q[1]*q[2] + q[0]*q[3]),q[0]*q[0]+q[1]*q[1]-q[2]*q[2]-q[3]*q[3])*57.3 ;		//æ„Ÿè§‰æ²¡æœ‰ä»·å€¼ï¼Œæ³¨æ‰     
 //			printf("%3f,%3f,%3f\n",Pitch,Roll, Yaw);
 				}
 				if((sensors & INV_XYZ_ACCEL))
 				{
-            /* accel_bias¾²Ö¹Ê±µÄ¼ÓËÙ¶ÈÖµ long accel_bias[3]={700,-239,14890}
+            /* accel_biasé™æ­¢æ—¶çš„åŠ é€Ÿåº¦å€¼ long accel_bias[3]={700,-239,14890}
             accel[0] -= accel_bias[0];
             accel[1] -= accel_bias[1];
             accel[2] -= accel_bias[2];
             */
 
             /*
-            Ô­Ê¼Êı¾İµÄ¼ÓËÙ¶ÈÖµ£¬³ıÒÔ16384µÃµ½m/s2Êµ¼Ê¼ÓËÙ¶ÈÖµ£¬Î´³ıÈ¥ÖØÁ¦
+            åŸå§‹æ•°æ®çš„åŠ é€Ÿåº¦å€¼ï¼Œé™¤ä»¥16384å¾—åˆ°m/s2å®é™…åŠ é€Ÿåº¦å€¼ï¼Œæœªé™¤å»é‡åŠ›
             printf("%3f,%3f,%3f\n",accel[0]/16384.0,accel[1]/16384.0, accel[2]/16384.0);
             */
 
             /*
-            ±£Áô£¬ÓÉÅ·À­½ÇµÃµ½×ª»»¾ØÕó£¬²»×¼£¬²»½¨ÒéÊ¹ÓÃ
+            ä¿ç•™ï¼Œç”±æ¬§æ‹‰è§’å¾—åˆ°è½¬æ¢çŸ©é˜µï¼Œä¸å‡†ï¼Œä¸å»ºè®®ä½¿ç”¨
             evaluateDirectionCosine(accel_g,gyro_res,accel_res);
             */
 
-            /* »ùÓÚËÄÔªÊıµÄ×ª»»¾ØÕó£¬½«²Î¿¼×ø±êÏµµÄÖØÁ¦¼ÓËÙ¶È×ª»»³ÉÔØÌå×ø±êÏµµÄ¼ÓËÙ¶È */
+            /* åŸºäºå››å…ƒæ•°çš„è½¬æ¢çŸ©é˜µï¼Œå°†å‚è€ƒåæ ‡ç³»çš„é‡åŠ›åŠ é€Ÿåº¦è½¬æ¢æˆè½½ä½“åæ ‡ç³»çš„åŠ é€Ÿåº¦ */
 //            evaluateQuat(accel_res,accel_g,q);
 					
-						/* ÏÈ¶Ô¼ÓËÙ¶È½øĞĞÂË²¨ */
+						/* å…ˆå¯¹åŠ é€Ÿåº¦è¿›è¡Œæ»¤æ³¢ */
 						acc_filter(accel,accel_ave);
 						
-            /* ½«»ùÓÚÔØÌå×ø±êÏµµÄ¼ÓËÙ¶ÈÖµ×ª»»Îª²Î¿¼×ø±êÏµ */
+            /* å°†åŸºäºè½½ä½“åæ ‡ç³»çš„åŠ é€Ÿåº¦å€¼è½¬æ¢ä¸ºå‚è€ƒåæ ‡ç³» */
             acc_convert(accel_res[1],accel_ave,q);
 						
 						for(i=0;i<3;i++)
@@ -412,13 +412,13 @@ int main(void)
 						accel_res[0][1] = accel_res[1][1];
 						accel_res[0][2] = accel_res[1][2];
 
-            /* ¼õÈ¥×ª»»ºóµÄÖØÁ¦¼ÓËÙ¶È£¬½«ÔØÌå×ø±êÏµ¸÷Öá¼ÓËÙ¶ÈÔö´óÖÁ100±¶£¬½øĞĞÏÔÊ¾ */
+            /* å‡å»è½¬æ¢åçš„é‡åŠ›åŠ é€Ÿåº¦ï¼Œå°†è½½ä½“åæ ‡ç³»å„è½´åŠ é€Ÿåº¦å¢å¤§è‡³100å€ï¼Œè¿›è¡Œæ˜¾ç¤º */
 //            accel_show[0] = (accel[0]/16384.0-accel_res[0])*100;
 //            accel_show[1] = (accel[1]/16384.0-accel_res[1])*100;
 //            accel_show[2] = (accel[2]/16384.0-accel_res[2])*100;
 //            Send_Data(gyro,accel_show);
 
-            /* ¼ÓËÙ¶ÈÒ»ÖØ»ı·ÖµÃµ½ËÙ¶È */
+            /* åŠ é€Ÿåº¦ä¸€é‡ç§¯åˆ†å¾—åˆ°é€Ÿåº¦ */
 //            acc_to_vel(vel,accel_final,accel_p,timestamp - time_pre); 
 //            time_pre = timestamp;
 //            vel_show[0] = vel[0] *100 ;
